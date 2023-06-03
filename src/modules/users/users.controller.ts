@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 import { IUsersControllerConstructor } from './users.types.js';
 import { BaseController } from '../../common/BaseController/base.controller.js';
@@ -12,11 +12,11 @@ export class UsersController extends BaseController {
     ]);
   }
 
-  login(req: Request, res: Response, next: NextFunction): Response {
+  login(req: Request, res: Response): Response {
     return this.ok(res, 'login');
   }
 
-  register(req: Request, res: Response, next: NextFunction): Response {
+  register(req: Request, res: Response): Response {
     return this.ok(res, 'register');
   }
 }

@@ -2,7 +2,7 @@ import { Server } from 'http';
 import express, { Express } from 'express';
 
 import { IAppConstructor } from './app.types.js';
-import { LoggerService } from './modules/logger/logger.service.js';
+import { ILogger } from './modules/logger/logger.types.js';
 import { UsersController } from './modules/users/users.controller.js';
 import { ExceptionsFilter } from './modules/errors/exceptions.filter.js';
 
@@ -10,13 +10,13 @@ export class App {
   app: Express;
   port: number;
   server: Server;
-  logger: LoggerService;
+  logger: ILogger;
   usersController: UsersController;
   exceptionsFilter: ExceptionsFilter;
 
   constructor({ logger, usersController, exceptionsFilter }: IAppConstructor) {
     this.app = express();
-    this.port = 3000;
+    this.port = 8000;
     this.logger = logger;
     this.usersController = usersController;
     this.exceptionsFilter = exceptionsFilter;

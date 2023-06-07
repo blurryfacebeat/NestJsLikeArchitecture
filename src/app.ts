@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { Server } from 'http';
-import { json } from 'body-parser';
+import bodyParser from 'body-parser';
 import express, { Express } from 'express';
 import { injectable, inject } from 'inversify';
 
@@ -31,7 +31,7 @@ export class App {
   }
 
   useMiddleware(): void {
-    this.app.use(json());
+    this.app.use(bodyParser.json());
   }
 
   useRoutes(): void {

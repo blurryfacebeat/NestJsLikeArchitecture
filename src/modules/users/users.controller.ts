@@ -10,7 +10,10 @@ import { IUsersService } from './users.service.types.js';
 import { UserRegisterDto } from './dto/UserRegister.dto.js';
 import { MODULE_TYPE } from '../../common/types/modules.types.js';
 import { TEmptyRecord } from '../../common/types/common.types.js';
+import { UserRegisterResultDto } from './dto/UserRegisterResult.dto.js';
+import { STATUS_CODE } from '../../common/constants/statusCode.constant.js';
 import { BaseController } from '../../common/BaseController/base.controller.js';
+import { ValidateMiddleware } from '../../common/middlewares/validate.middleware.js';
 import { THIS_USER_ALREADY_EXISTS } from '../../common/exceptions/exceptionsMessages.js';
 
 @injectable()
@@ -22,7 +25,12 @@ export class UsersController extends BaseController implements IUsersController 
     super(_logger);
 
     this.bindRoutes([
-      { path: '/register', method: 'post', func: this.register },
+      {
+        path: '/register',
+        method: 'post',
+        func: this.register,
+        middlewares: [new ValidateMiddleware(UserRegisterDto)],
+      },
       { path: '/login', method: 'post', func: this.login },
     ]);
   }
@@ -34,9 +42,9 @@ export class UsersController extends BaseController implements IUsersController 
   async register({ body }: Request<TEmptyRecord, TEmptyRecord, UserRegisterDto>, res: Response, next: NextFunction) {
     const result = await this._usersService.createUser(body);
 
-    if (!result) return next(new HttpError({ statusCode: 422, message: THIS_USER_ALREADY_EXISTS }));
+    if (!result)
+      return next(new HttpError({ statusCode: STATUS_CODE.INVALID_DATA, message: THIS_USER_ALREADY_EXISTS }));
 
-    // TODO сделать DTO для возвращаемого объекта result (без пароля)
-    return this.ok(res, result);
+    return this.ok(res, new UserRegisterResultDto(result));
   }
 }

@@ -1,4 +1,4 @@
-import { hash } from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 
 export class UserEntity {
   private _password: string;
@@ -22,6 +22,6 @@ export class UserEntity {
   }
 
   async setPassword(password: string) {
-    this._password = await hash(password, 10);
+    this._password = await bcrypt.hash(password, '$2a$10$llw0G6IyibUob8h5XRt9xuRczaGdCm/AiV6SSjf5v78XS824EGbh');
   }
 }
